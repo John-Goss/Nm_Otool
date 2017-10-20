@@ -6,7 +6,7 @@
 /*   By: jle-quer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/30 11:37:11 by jle-quer          #+#    #+#             */
-/*   Updated: 2016/09/29 13:02:49 by jle-quer         ###   ########.fr       */
+/*   Updated: 2017/10/18 16:18:20 by jle-quer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 # include <string.h>
 # include <unistd.h>
 # include <stdlib.h>
-# define DEBUG ft_printf("%s in %s at %d\n", __func__, __FILE__, __LINE__)
 
 typedef struct		s_list
 {
