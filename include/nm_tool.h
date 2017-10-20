@@ -51,6 +51,6 @@ char				type_element_32(struct nlist list, struct load_command *lc, t_symbol_val
  * OTHER
 */
 
-void				ft_nm(char *ptr);
+int					ft_nm(char *ptr, char *object);
 
 #endif

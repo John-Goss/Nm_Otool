@@ -1,18 +1,21 @@
 #include "../include/nm_tool.h"
 
-void ft_nm(char *ptr)
+int	ft_nm(char *ptr, char *object)
 {
     int	magic_number;
 	
     magic_number = *(int *)ptr;
     if (magic_number == MH_MAGIC_64)
         handle_64(ptr);
-    if (magic_number == MH_MAGIC)
+    else if (magic_number == MH_MAGIC)
         handle_32(ptr);
-	if (magic_number == MH_DYLIB)
-		;//DYLIB
-	if (magic_number == FAT_MAGIC || magic_number == FAT_CIGAM)
-		;//FAT
+	else if (magic_number == MH_DYLIB)
+		ft_printf("MH_DYLIB\n");//DYLIB (.a)
+	else if (magic_number == FAT_MAGIC || magic_number == FAT_CIGAM)
+		ft_printf("FAT_MAGIC\n");//FAT (multi x86/x64)
+	else
+		ERROR(object, "The file was not recognized as a valid object file.");
+	return (1);
 }
 
 int main(int ac, char **av)
@@ -33,7 +36,7 @@ int main(int ac, char **av)
 		{
 			ERROR(av[1], "mmap - MAP_FAILED.");
 		}
-		ft_nm(ptr);
+		ft_nm(ptr, av[1]);
     }
     else
         ERROR(av[1], "No such file or directory.");
