@@ -1,6 +1,6 @@
 #include "../include/nm_tool.h"
 
-void nm(char *ptr)
+void ft_nm(char *ptr)
 {
     int	magic_number;
 	
@@ -9,6 +9,10 @@ void nm(char *ptr)
         handle_64(ptr);
     if (magic_number == MH_MAGIC)
         handle_32(ptr);
+	if (magic_number == MH_DYLIB)
+		;//DYLIB
+	if (magic_number == FAT_MAGIC || magic_number == FAT_CIGAM)
+		;//FAT
 }
 
 int main(int ac, char **av)
@@ -23,15 +27,15 @@ int main(int ac, char **av)
     {
         if (fstat(fd, &buf) < 0)
         {
-            ERROR("");
+            ERROR(av[1], "fstat - The fildes argument is not a valid file descriptor.");
         }
         if ((ptr = mmap(0, buf.st_size, PROT_READ, MAP_PRIVATE, fd, 0)) == MAP_FAILED)
 		{
-			ERROR("ok");
+			ERROR(av[1], "mmap - MAP_FAILED.");
 		}
-		nm(ptr);
+		ft_nm(ptr);
     }
     else
-        ERROR(av[1]);
+        ERROR(av[1], "No such file or directory.");
     return (0);
 }

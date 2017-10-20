@@ -2,18 +2,23 @@
 
 void	display_out_32(uint32_t value, char *str, char type)
 {
-	if (value == 0)
-		ft_printf("%16s %c %s\n", " ", type, str);
+	if (type != 'U' && type != 'u')
+		ft_printf("%016llx ", value);
 	else
-		ft_printf("00000001%08x %c %s\n", value, type, str);
+		ft_putstr("                 ");
+	ft_printf("%c ", type);
+	ft_printf("%s\n", str);
 }
 
 void	display_out_64(uint64_t value, char *str, char type)
 {
-	if (value == 0)
-		ft_printf("%16s %c %s\n", " ", type, str);
+	if (type != 'U' && type != 'u')
+		ft_printf("%016llx ", value);
 	else
-		ft_printf("00000001%08x %c %s\n", value, type, str);
+		ft_putstr("                 ");
+	ft_printf("%c ", type);
+	ft_printf("%s\n", str);
+	
 }
 
 void	print_output_32(struct symtab_command *sym, char *ptr, struct mach_header *header)

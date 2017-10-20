@@ -6,6 +6,7 @@
 # include <sys/mman.h>
 # include <mach-o/loader.h>
 # include <mach-o/nlist.h>
+# include <mach-o/fat.h>
 # include <sys/stat.h>
 # include <stdlib.h>
 # include "../libft/INCLUDES/libft.h"
@@ -16,10 +17,7 @@
  * ft_putnbr(__LINE__); ft_putchar('\n')
 */
 
-# define ERROR(name)								\
-ft_putstr(ft_strjoin(ft_strjoin("nm: ", name),	\
-" No such file or directory.\n"));				\
-return (-1)
+# define ERROR(name, errmsg) ft_printf("nm: %s: %s\n", name, errmsg); return (-1)
 
 typedef struct          s_symbol_value
 {
@@ -30,7 +28,7 @@ typedef struct          s_symbol_value
 }                       t_symbol_value;
 
 /*
- * x64 Arch
+ * x64 ARCH
 */
  
 struct nlist_64		*bubble_sort_nlist_64(char *stringtable, struct nlist_64 *tab, int taille);
@@ -40,7 +38,7 @@ void				print_output_64(struct symtab_command *sym, char *ptr, struct mach_heade
 char				type_element_64(struct nlist_64 list, struct load_command *lc, t_symbol_value symt);
 
 /*
- * x86 Arch
+ * x86 ARCH
 */
 
 struct nlist		*bubble_sort_nlist_32(char *stringtable, struct nlist *tab, int taille);
@@ -48,5 +46,11 @@ void				symbol_build_32(t_symbol_value *symt, struct mach_header *header, struct
 void				handle_32(char *ptr);
 void				print_output_32(struct symtab_command *sym, char *ptr, struct mach_header *header);
 char				type_element_32(struct nlist list, struct load_command *lc, t_symbol_value symt);
+
+/*
+ * OTHER
+*/
+
+void				ft_nm(char *ptr);
 
 #endif
