@@ -18,7 +18,6 @@ void	display_out_64(uint64_t value, char *str, char type)
 		ft_putstr("                 ");
 	ft_printf("%c ", type);
 	ft_printf("%s\n", str);
-	
 }
 
 void	print_output_32(struct symtab_command *sym, char *ptr, struct mach_header *header)

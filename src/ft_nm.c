@@ -1,6 +1,6 @@
 #include "../include/nm_tool.h"
 
-int	ft_nm(char *ptr, char *object)
+int	ft_nm(void *ptr, char *object)
 {
     int	magic_number;
 	
@@ -9,8 +9,8 @@ int	ft_nm(char *ptr, char *object)
         handle_64(ptr);
     else if (magic_number == MH_MAGIC)
         handle_32(ptr);
-	else if (magic_number == MH_DYLIB)
-		ft_printf("MH_DYLIB\n");//DYLIB (.a)
+	else if (ft_strncmp(ptr, ARMAG, SARMAG) == 0)
+		handle_dynamic_lib(ptr, object);
 	else if (magic_number == FAT_MAGIC || magic_number == FAT_CIGAM)
 		ft_printf("FAT_MAGIC\n");//FAT (multi x86/x64)
 	else

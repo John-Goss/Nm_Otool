@@ -7,8 +7,10 @@
 # include <mach-o/loader.h>
 # include <mach-o/nlist.h>
 # include <mach-o/fat.h>
+# include <mach-o/ranlib.h>
 # include <sys/stat.h>
 # include <stdlib.h>
+# include <ar.h>
 # include "../libft/INCLUDES/libft.h"
 
 /*
@@ -18,6 +20,13 @@
 */
 
 # define ERROR(name, errmsg) ft_printf("nm: %s: %s\n", name, errmsg); return (-1)
+
+typedef struct			s_offlist
+{
+	uint32_t			off;
+	uint32_t			strx;
+	struct s_offlist	*next;
+}						t_offlist;
 
 typedef struct          s_symbol_value
 {
@@ -48,9 +57,18 @@ void				print_output_32(struct symtab_command *sym, char *ptr, struct mach_heade
 char				type_element_32(struct nlist list, struct load_command *lc, t_symbol_value symt);
 
 /*
+ * Archive Type
+ */
+
+void				handle_dynamic_lib(char *ptr, char *name);
+void				browse_ar(t_offlist *lst, char *ptr, char *name);
+int					catch_size(char *name);
+t_offlist			*add_off(t_offlist *lst, uint32_t off, uint32_t strx);
+
+/*
  * OTHER
 */
 
-int					ft_nm(char *ptr, char *object);
+int					ft_nm(void *ptr, char *object);
 
 #endif
