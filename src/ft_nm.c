@@ -12,7 +12,7 @@ int	ft_nm(void *ptr, char *object)
 	else if (ft_strncmp(ptr, ARMAG, SARMAG) == 0)
 		handle_dynamic_lib(ptr, object);
 	else if (magic_number == FAT_MAGIC || magic_number == FAT_CIGAM)
-		ft_printf("FAT_MAGIC\n");//FAT (multi x86/x64)
+		handle_fat(ptr);
 	else
 		ERROR(object, "The file was not recognized as a valid object file.");
 	return (1);

@@ -41,6 +41,7 @@ typedef struct          s_symbol_value
 */
  
 struct nlist_64		*bubble_sort_nlist_64(char *stringtable, struct nlist_64 *tab, int taille);
+void				sort_duplicate_strx_by_value_64(struct nlist_64 *array, char *stringtable, struct load_command *lc, uint32_t size);
 void				symbol_build_64(t_symbol_value *symt, struct mach_header_64 *header, struct load_command *lc);
 void				handle_64(char *ptr);
 void				print_output_64(struct symtab_command *sym, char *ptr, struct mach_header_64 *header);
@@ -51,6 +52,7 @@ char				type_element_64(struct nlist_64 list, struct load_command *lc, t_symbol_
 */
 
 struct nlist		*bubble_sort_nlist_32(char *stringtable, struct nlist *tab, int taille);
+void				sort_duplicate_strx_by_value_32(struct nlist *array, char *stringtable, struct load_command *lc, uint32_t size);
 void				symbol_build_32(t_symbol_value *symt, struct mach_header *header, struct load_command *lc);
 void				handle_32(char *ptr);
 void				print_output_32(struct symtab_command *sym, char *ptr, struct mach_header *header);
@@ -64,11 +66,14 @@ void				handle_dynamic_lib(char *ptr, char *name);
 void				browse_ar(t_offlist *lst, char *ptr, char *name);
 int					catch_size(char *name);
 t_offlist			*add_off(t_offlist *lst, uint32_t off, uint32_t strx);
+int					search_duplicate_in_lst(t_offlist *lst, uint32_t off);
 
 /*
  * OTHER
 */
 
 int					ft_nm(void *ptr, char *object);
+void				handle_fat(char *ptr);
+uint32_t			swap_uint32(uint32_t val);
 
 #endif

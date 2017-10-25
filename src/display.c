@@ -33,6 +33,7 @@ void	print_output_32(struct symtab_command *sym, char *ptr, struct mach_header *
 	stringtable = (void *)ptr + sym->stroff;
 	lc = (void *)ptr + sizeof(*header);
 	array = bubble_sort_nlist_32(stringtable, array, sym->nsyms);
+	sort_duplicate_strx_by_value_32(array, stringtable, lc, sym->nsyms);
 	symbol_build_32(&symt, header, lc);
 	while (++i < sym->nsyms)
 		display_out_32(array[i].n_value, stringtable + \
@@ -52,6 +53,7 @@ void	print_output_64(struct symtab_command *sym, char *ptr, struct mach_header_6
 	stringtable = (void *)ptr + sym->stroff;
 	lc = (void *)ptr + sizeof(*header);
 	array = bubble_sort_nlist_64(stringtable, array, sym->nsyms);
+	sort_duplicate_strx_by_value_64(array, stringtable, lc, sym->nsyms);
 	symbol_build_64(&symt, header, lc);
 	while (++i < sym->nsyms)
 		display_out_64(array[i].n_value, stringtable + \

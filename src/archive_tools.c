@@ -35,6 +35,8 @@ t_offlist	*add_off(t_offlist *lst, uint32_t off, uint32_t strx)
 	tmp2 = lst;
 	while (tmp2->next)
 		tmp2 = tmp2->next;
+	if (search_duplicate_in_lst(lst, off))
+		return (lst);
 	tmp2->next = tmp;
 	return (lst);
 }
