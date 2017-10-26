@@ -1,5 +1,5 @@
-#ifndef NM_H
-# define NM_H
+#ifndef OTOOL_H
+# define OTOOL_H
 
 # include <fcntl.h>
 # include <stdio.h>
@@ -19,7 +19,7 @@
  * ft_putnbr(__LINE__); ft_putchar('\n')
  */
 
-# define ERROR(name, errmsg) ft_printf("nm: %s: %s\n", name, errmsg); return (-1)
+# define ERROR(name, errmsg) ft_printf("nm: %s: %s\n", name, errmsg); return (1)
 
 typedef struct			s_offlist
 {
