@@ -73,7 +73,7 @@ int					search_duplicate_in_lst(t_offlist *lst, uint32_t off);
 */
 
 int					ft_nm(void *ptr, char *object);
-void				handle_fat(char *ptr);
-uint32_t			swap_uint32(uint32_t val);
+void				handle_fat(char *ptr, int is_little_endian);
+uint32_t			swap_uint32(uint32_t val, int is_little_endian);
 
 #endif
