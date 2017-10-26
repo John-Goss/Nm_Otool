@@ -1,6 +1,6 @@
 #include "../../include/nm.h"
 
-char type_n_sect(unsigned int n_sect, t_symbol_value symt)
+char type_n_sect(uint32_t n_sect, t_symbol_value symt)
 {
 	if (n_sect == symt.text)
 		return ('T');
@@ -11,7 +11,7 @@ char type_n_sect(unsigned int n_sect, t_symbol_value symt)
 	return ('S');
 }
 
-char type_element_32(struct nlist list, struct load_command *lc, t_symbol_value symt)
+char type_element_32(struct nlist list, t_symbol_value symt)
 {
 	char car;
 	
@@ -36,7 +36,7 @@ char type_element_32(struct nlist list, struct load_command *lc, t_symbol_value 
 	return (car);
 }
 
-char type_element_64(struct nlist_64 list, struct load_command *lc, t_symbol_value symt)
+char type_element_64(struct nlist_64 list, t_symbol_value symt)
 {
 	char car;
 	

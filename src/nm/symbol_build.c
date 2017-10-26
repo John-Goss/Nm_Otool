@@ -2,7 +2,7 @@
 
 static void    symbol_fill_32(t_symbol_value *symt, struct segment_command *seg, struct section *sect)
 {
-	int	i;
+	uint32_t	i;
 	
 	i = 0;
 	while (i < seg->nsects)
@@ -24,7 +24,7 @@ static void    symbol_fill_32(t_symbol_value *symt, struct segment_command *seg,
 
 static void    symbol_fill_64(t_symbol_value *symt, struct segment_command_64 *seg, struct section_64 *sect)
 {
-	int	i;
+	uint32_t	i;
 	
 	i = 0;
 	while (i < seg->nsects)
@@ -47,9 +47,9 @@ static void    symbol_fill_64(t_symbol_value *symt, struct segment_command_64 *s
 void    symbol_build_32(t_symbol_value *symt, struct mach_header *header,\
 						struct load_command *lc)
 {
-	struct segment_command *seg;
-	struct section *sect;
-	int					i;
+	struct segment_command	*seg;
+	struct section			*sect;
+	uint32_t				i;
 	
 	i = 0;
 	while (i < header->ncmds)
@@ -68,9 +68,9 @@ void    symbol_build_32(t_symbol_value *symt, struct mach_header *header,\
 void    symbol_build_64(t_symbol_value *symt, struct mach_header_64 *header,\
 						struct load_command *lc)
 {
-	struct segment_command_64 *seg;
-	struct section_64 *sect;
-	int					i;
+	struct segment_command_64	*seg;
+	struct section_64			*sect;
+	uint32_t					i;
 	
 	i = 0;
 	while (i < header->ncmds)

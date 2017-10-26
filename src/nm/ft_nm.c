@@ -2,9 +2,9 @@
 
 int	ft_nm(void *ptr, char *object)
 {
-    int	magic_number;
+    uint32_t	magic_number;
 	
-    magic_number = *(int *)ptr;
+    magic_number = *(uint32_t *)ptr;
     if (magic_number == MH_MAGIC_64)
         handle_64(ptr);
     else if (magic_number == MH_MAGIC)

@@ -86,11 +86,11 @@ struct nlist			*bubble_sort_nlist_32(char *stringtable, struct nlist *tab, int t
 	return (tab2);
 }
 
-void	sort_duplicate_strx_by_value_32(struct nlist *array, char *stringtable, struct load_command *lc, uint32_t size)
+void	sort_duplicate_strx_by_value_32(struct nlist *array, char *stringtable, uint32_t size)
 {
 	uint32_t		tmp_value;
 	int				sorted;
-	int				increment;
+	uint32_t		increment;
 	
 	sorted = 0;
 	tmp_value = 0;
@@ -116,11 +116,11 @@ void	sort_duplicate_strx_by_value_32(struct nlist *array, char *stringtable, str
 	}
 }
 
-void	sort_duplicate_strx_by_value_64(struct nlist_64 *array, char *stringtable, struct load_command *lc, uint32_t size)
+void	sort_duplicate_strx_by_value_64(struct nlist_64 *array, char *stringtable, uint32_t size)
 {
 	uint64_t		tmp_value;
 	int				sorted;
-	int				increment;
+	uint32_t		increment;
 	
 	sorted = 0;
 	tmp_value = 0;

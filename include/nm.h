@@ -30,10 +30,10 @@ typedef struct			s_offlist
 
 typedef struct          s_symbol_value
 {
-    int data;
-    int bss;
-    int text;
-    int ns;
+    uint32_t	data;
+    uint32_t	bss;
+    uint32_t	text;
+    int			ns;
 }                       t_symbol_value;
 
 /*
@@ -41,22 +41,22 @@ typedef struct          s_symbol_value
 */
  
 struct nlist_64		*bubble_sort_nlist_64(char *stringtable, struct nlist_64 *tab, int taille);
-void				sort_duplicate_strx_by_value_64(struct nlist_64 *array, char *stringtable, struct load_command *lc, uint32_t size);
+void				sort_duplicate_strx_by_value_64(struct nlist_64 *array, char *stringtable, uint32_t size);
 void				symbol_build_64(t_symbol_value *symt, struct mach_header_64 *header, struct load_command *lc);
 void				handle_64(char *ptr);
 void				print_output_64(struct symtab_command *sym, char *ptr, struct mach_header_64 *header);
-char				type_element_64(struct nlist_64 list, struct load_command *lc, t_symbol_value symt);
+char				type_element_64(struct nlist_64 list, t_symbol_value symt);
 
 /*
  * x86 ARCH
 */
 
 struct nlist		*bubble_sort_nlist_32(char *stringtable, struct nlist *tab, int taille);
-void				sort_duplicate_strx_by_value_32(struct nlist *array, char *stringtable, struct load_command *lc, uint32_t size);
+void				sort_duplicate_strx_by_value_32(struct nlist *array, char *stringtable, uint32_t size);
 void				symbol_build_32(t_symbol_value *symt, struct mach_header *header, struct load_command *lc);
 void				handle_32(char *ptr);
 void				print_output_32(struct symtab_command *sym, char *ptr, struct mach_header *header);
-char				type_element_32(struct nlist list, struct load_command *lc, t_symbol_value symt);
+char				type_element_32(struct nlist list, t_symbol_value symt);
 
 /*
  * Archive Type
