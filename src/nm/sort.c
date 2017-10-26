@@ -1,4 +1,4 @@
-#include "../include/nm.h"
+#include "../../include/nm.h"
 
 static struct nlist		*fill_array_32(struct nlist *tab, int taille)
 {

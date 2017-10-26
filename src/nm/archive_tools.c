@@ -1,4 +1,4 @@
-#include "../include/nm.h"
+#include "../../include/nm.h"
 
 static char	*catch_name(char *name)
 {

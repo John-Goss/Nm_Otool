@@ -1,4 +1,4 @@
-#include "../include/nm.h"
+#include "../../include/nm.h"
 
 uint32_t	swap_uint32(uint32_t val)
 {

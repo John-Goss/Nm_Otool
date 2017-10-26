@@ -1,4 +1,4 @@
-#include "../include/nm.h"
+#include "../../include/nm.h"
 
 void	display_out_32(uint32_t value, char *str, char type)
 {
