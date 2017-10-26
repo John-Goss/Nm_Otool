@@ -1,4 +1,4 @@
-#include "../include/nm_tool.h"
+#include "../include/nm.h"
 
 int	ft_nm(void *ptr, char *object)
 {

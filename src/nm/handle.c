@@ -1,4 +1,4 @@
-#include "../include/nm_tool.h"
+#include "../include/nm.h"
 
 void	handle_64(char *ptr)
 {

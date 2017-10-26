@@ -1,5 +1,5 @@
-#ifndef NM_TOOL_H
-# define NM_TOOL_H
+#ifndef NM_H
+# define NM_H
 
 # include <fcntl.h>
 # include <stdio.h>

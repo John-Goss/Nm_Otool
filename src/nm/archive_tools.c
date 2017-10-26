@@ -1,4 +1,4 @@
-#include "../include/nm_tool.h"
+#include "../include/nm.h"
 
 static char	*catch_name(char *name)
 {

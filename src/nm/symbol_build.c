@@ -1,4 +1,4 @@
-#include "../include/nm_tool.h"
+#include "../include/nm.h"
 
 static void    symbol_fill_32(t_symbol_value *symt, struct segment_command *seg, struct section *sect)
 {

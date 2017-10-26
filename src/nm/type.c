@@ -1,4 +1,4 @@
-#include "../include/nm_tool.h"
+#include "../include/nm.h"
 
 char type_n_sect(unsigned int n_sect, t_symbol_value symt)
 {
