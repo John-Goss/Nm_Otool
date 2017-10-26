@@ -2,6 +2,8 @@
 
 void	display_out_32(uint32_t value, char *str, char type)
 {
+	if (ft_strcmp("radr://5614542", str) == 0)
+		return ;
 	if (type != 'U' && type != 'u')
 		ft_printf("%016llx ", value);
 	else
@@ -12,6 +14,8 @@ void	display_out_32(uint32_t value, char *str, char type)
 
 void	display_out_64(uint64_t value, char *str, char type)
 {
+	if (ft_strcmp("radr://5614542", str) == 0)
+		return ;
 	if (type != 'U' && type != 'u')
 		ft_printf("%016llx ", value);
 	else
