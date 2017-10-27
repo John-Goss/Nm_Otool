@@ -3,7 +3,9 @@ NAME_OTOOL = 		ft_otool
 
 SRC_DIR_NM =		./src/nm
 SRC_DIR_OTOOL =	 	./src/otool
-OBJ_DIR = 			./obj
+
+OBJ_DIR_NM = 		./obj_nm
+OBJ_DIR_OTOOL =		./obj_otool
 
 SRC_NM = 			ft_nm.c \
 					sort.c \
@@ -14,10 +16,13 @@ SRC_NM = 			ft_nm.c \
 					type.c \
 					archive_tools.c
 
-SRC_OTOOL = 		ft_otool.c
+SRC_OTOOL = 		ft_otool.c \
+					handle.c \
+					display.c \
+					archive_tools.c
 
-OBJ_NM = 			$(addprefix $(OBJ_DIR)/,$(SRC_NM:.c=.o))
-OBJ_OTOOL = 		$(addprefix $(OBJ_DIR)/,$(SRC_OTOOL:.c=.o))
+OBJ_NM = 			$(addprefix $(OBJ_DIR_NM)/,$(SRC_NM:.c=.o))
+OBJ_OTOOL = 		$(addprefix $(OBJ_DIR_OTOOL)/,$(SRC_OTOOL:.c=.o))
 
 SRC_PATH_NM = 		$(addprefix $(SRC_DIR_NM)/, $(SRC_NM))
 SRC_PATH_OTOOL =	$(addprefix $(SRC_DIR_OTOOL)/, $(SRC_OTOOL))
@@ -32,7 +37,7 @@ I_LIBFT = 	-I libft/INCLUDES/
 
 LIBFT = 	$(I_LIBFT) -Llibft -lft
 
-all: $(NAME_NM) $(NAME_OTOOL) res
+all: $(NAME_NM) $(NAME_OTOOL)
 
 nm: $(NAME_NM)
 
@@ -48,19 +53,13 @@ $(NAME_OTOOL): $(OBJ_OTOOL)
 	@$(CC) $(FLAGS) -o $@ $(OBJ_OTOOL) $(HEADERS) $(LIBFT)
 	@echo "\033[1;34mOtool\t\t\033[1;33mCompilation\t\033[0;32m-OK-\033[0m"
 
-$(OBJ_DIR)/%.o: $(SRC_DIR_NM)/%.c
-	@mkdir $(OBJ_DIR) 2> /dev/null || true
+$(OBJ_DIR_NM)/%.o: $(SRC_DIR_NM)/%.c
+	@mkdir $(OBJ_DIR_NM) 2> /dev/null || true
 	@$(CC) $(FLAGS) $(HEADERS) -o $@ -c $< $(I_LIBFT)
 
-$(OBJ_DIR)/%.o: $(SRC_DIR_OTOOL)/%.c
-	@mkdir $(OBJ_DIR) 2> /dev/null || true
+$(OBJ_DIR_OTOOL)/%.o: $(SRC_DIR_OTOOL)/%.c
+	@mkdir $(OBJ_DIR_OTOOL) 2> /dev/null || true
 	@$(CC) $(FLAGS) $(HEADERS) -o $@ -c $< $(I_LIBFT)
-
-res:
-	@mkdir -p res/
-	@cat /usr/include/mach-o/loader.h > res/loader.h
-	@cat /usr/include/mach-o/nlist.h > res/nlist.h
-	@cat /usr/include/ar.h > res/ar.h
 
 clean:
 	@rm -rf $(OBJ_NM) $(OBJ_OTOOL) $(NAME_NM) $(NAME_OTOOL)
@@ -69,7 +68,7 @@ clean:
 fclean: clean
 	@make fclean -C libft
 	@echo "\033[1;34mNm_otool\t\033[1;33mCleaning lib\t\033[0;32m-OK-\033[0m"
-	@rm -rf $(OBJ_DIR) res/
+	@rm -rf $(OBJ_DIR_NM) $(OBJ_DIR_OTOOL)
 
 re: fclean all
 
