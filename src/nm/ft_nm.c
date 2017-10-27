@@ -40,5 +40,6 @@ int main(int ac, char **av)
     }
     else
         ERROR(av[1], "No such file or directory.");
+	close(fd);
     return (0);
 }
