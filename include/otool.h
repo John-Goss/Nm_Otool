@@ -28,14 +28,6 @@ typedef struct			s_offlist
 	struct s_offlist	*next;
 }						t_offlist;
 
-typedef struct          s_symbol_value
-{
-	int data;
-	int bss;
-	int text;
-	int ns;
-}                       t_symbol_value;
-
 /*
  * x64 ARCH
  */
