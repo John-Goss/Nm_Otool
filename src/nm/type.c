@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   type.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jle-quer <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/10/30 12:45:46 by jle-quer          #+#    #+#             */
+/*   Updated: 2017/10/30 12:46:26 by jle-quer         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/nm.h"
 
-char type_n_sect(uint32_t n_sect, t_symbol_value symt)
+char	type_n_sect(uint32_t n_sect, t_symbol_value symt)
 {
 	if (n_sect == symt.text)
 		return ('T');
@@ -11,10 +23,10 @@ char type_n_sect(uint32_t n_sect, t_symbol_value symt)
 	return ('S');
 }
 
-char type_element_32(struct nlist list, t_symbol_value symt)
+char	type_element_32(struct nlist list, t_symbol_value symt)
 {
-	char car;
-	
+	char	car;
+
 	car = '?';
 	if ((list.n_type & N_TYPE) == N_UNDF)
 	{
@@ -36,10 +48,10 @@ char type_element_32(struct nlist list, t_symbol_value symt)
 	return (car);
 }
 
-char type_element_64(struct nlist_64 list, t_symbol_value symt)
+char	type_element_64(struct nlist_64 list, t_symbol_value symt)
 {
-	char car;
-	
+	char	car;
+
 	car = '?';
 	if ((list.n_type & N_TYPE) == N_UNDF)
 	{

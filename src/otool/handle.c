@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   handle.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jle-quer <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/10/30 13:13:30 by jle-quer          #+#    #+#             */
+/*   Updated: 2017/10/30 13:18:34 by jle-quer         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <otool.h>
 
 void	handle_32(char *ptr, char *name, int should_display_infos)
@@ -6,7 +18,7 @@ void	handle_32(char *ptr, char *name, int should_display_infos)
 	struct segment_command	*seg;
 	struct section			*sect;
 	struct load_command		*lc;
-	
+
 	i = 0;
 	lc = (void *)ptr + sizeof(struct mach_header);
 	while (++i < ((struct mach_header *)ptr)->ncmds)
@@ -17,7 +29,10 @@ void	handle_32(char *ptr, char *name, int should_display_infos)
 			while (++i < seg->nsects)
 			{
 				if (!ft_strcmp(sect->sectname, SECT_TEXT))
-					return (print_output_32(sect, ptr, name, should_display_infos));
+				{
+					return (print_output_32(sect, ptr, name,
+								should_display_infos));
+				}
 				sect = (void *)sect + sizeof(*sect);
 			}
 			lc = (void *)lc + lc->cmdsize;
@@ -31,7 +46,7 @@ void	handle_64(char *ptr, char *name, int should_display_infos)
 	struct segment_command_64	*seg;
 	struct section_64			*sect;
 	struct load_command			*lc;
-	
+
 	i = 0;
 	j = 0;
 	lc = (void *)ptr + sizeof(struct mach_header_64);
@@ -43,7 +58,10 @@ void	handle_64(char *ptr, char *name, int should_display_infos)
 			while (j++ < seg->nsects)
 			{
 				if (!ft_strcmp(sect->sectname, SECT_TEXT))
-					return (print_output_64(sect, ptr, name, should_display_infos));
+				{
+					return (print_output_64(sect, ptr, name,
+								should_display_infos));
+				}
 				sect = (void *)sect + sizeof(*sect);
 			}
 			lc = (void *)lc + lc->cmdsize;
@@ -57,7 +75,7 @@ int		handle_fat(char *ptr, char *name, int is_little_endian)
 	uint32_t				offset;
 	struct mach_header_64	*header;
 	size_t					i;
-	
+
 	h = (struct fat_header *)ptr;
 	arch = (void *)h + sizeof(*h);
 	offset = swap_uint32(arch->offset, is_little_endian);
@@ -69,7 +87,7 @@ int		handle_fat(char *ptr, char *name, int is_little_endian)
 		if (swap_uint32(arch->cputype, is_little_endian) == CPU_TYPE_X86_64)
 			break ;
 		arch = (void *)arch + sizeof(*arch);
-		i++;
+		++i;
 	}
 	header = (void *)ptr + offset;
 	ft_otool((void *)header, name, 1);
@@ -82,23 +100,21 @@ void	handle_dynamic_lib(char *ptr, char *name)
 	struct ranlib	*ran;
 	t_offlist		*lst;
 	char			*test;
-	int				i;
-	int				size;
-	int				name_size;
-	
-	i = 0;
+	int				cunt[3];
+
+	cunt[0] = 0;
 	arch = (void*)ptr + SARMAG;
-	name_size = catch_size(arch->ar_name);
-	test = (void*)ptr + sizeof(*arch) + SARMAG + name_size;
-	ran = (void*)ptr + sizeof(*arch) + SARMAG + name_size + 4;
-	size = *((int *)test);
+	cunt[1] = catch_size(arch->ar_name);
+	test = (void*)ptr + sizeof(*arch) + SARMAG + cunt[1];
+	ran = (void*)ptr + sizeof(*arch) + SARMAG + cunt[1] + 4;
+	cunt[2] = *((int *)test);
 	lst = NULL;
-	size = size / sizeof(struct ranlib);
+	cunt[2] = cunt[2] / sizeof(struct ranlib);
 	ft_printf("Archive : %s\n", name);
-	while (i < size)
+	while (cunt[0] < cunt[2])
 	{
-		lst = add_off(lst, ran[i].ran_off, ran[i].ran_un.ran_strx);
-		i++;
+		lst = add_off(lst, ran[cunt[0]].ran_off, ran[cunt[0]].ran_un.ran_strx);
+		++cunt[0];
 	}
 	browse_ar(lst, ptr, name);
 }

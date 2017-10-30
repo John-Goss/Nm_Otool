@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   otool.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jle-quer <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/10/30 12:50:31 by jle-quer          #+#    #+#             */
+/*   Updated: 2017/10/30 13:08:15 by jle-quer         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef OTOOL_H
 # define OTOOL_H
 
@@ -13,13 +25,13 @@
 # include <ar.h>
 # include "../libft/INCLUDES/libft.h"
 
+/*
+**# define DBG ft_putstr(__func__); ft_putstr(" in "); \
+**ft_putstr(__FILE__); ft_putstr(" at line : "); \
+**ft_putnbr(__LINE__); ft_putchar('\n')
+*/
 
-  # define DBG ft_putstr(__func__); ft_putstr(" in "); \
-  ft_putstr(__FILE__); ft_putstr(" at line : "); \
-  ft_putnbr(__LINE__); ft_putchar('\n')
-
-
-# define ERROR(name, errmsg) ft_printf("error: %s: %s\n", name, errmsg); return (1)
+# define ERROR(name, errmsg)ft_printf("error: %s: %s\n", name, errmsg)
 
 typedef struct			s_offlist
 {
@@ -29,35 +41,40 @@ typedef struct			s_offlist
 }						t_offlist;
 
 /*
- * x64 ARCH
- */
+**x64 ARCH
+*/
 
-void		handle_64(char *ptr, char *name, int should_display_infos);
-void		print_output_64(struct section_64 *section, void *ptr, char *name, int should_display_infos);
-
-/*
- * x86 ARCH
- */
-
-void		handle_32(char *ptr, char *name, int should_display_infos);
-void		print_output_32(struct section *section, void *ptr, char *name, int should_display_infos);
+void					handle_64(char *ptr, char *name,
+		int should_display_infos);
+void					print_output_64(struct section_64 *section, void *ptr,
+		char *name, int should_display_infos);
 
 /*
- * Archive Type
- */
+**x86 ARCH
+*/
 
-void		handle_dynamic_lib(char *ptr, char *name);
-t_offlist	*add_off(t_offlist *lst, uint32_t off, uint32_t strx);
-int			catch_size(char *name);
-void		browse_ar(t_offlist *lst, char *ptr, char *name);
+void					handle_32(char *ptr, char *name,
+		int should_display_infos);
+void					print_output_32(struct section *section, void *ptr,
+		char *name, int should_display_infos);
 
 /*
- * OTHER
- */
+**Archive Type
+*/
 
-int			ft_otool(char *ptr, char *name, int should_display_infos);
-int			handle_fat(char *ptr, char *name, int is_little_endian);
-uint32_t	swap_uint32(uint32_t val, int is_little_endian);
-int			search_duplicate_in_lst(t_offlist *lst, uint32_t off);
+void					handle_dynamic_lib(char *ptr, char *name);
+t_offlist				*add_off(t_offlist *lst, uint32_t off, uint32_t strx);
+int						catch_size(char *name);
+void					browse_ar(t_offlist *lst, char *ptr, char *name);
+
+/*
+** OTHER
+*/
+
+int						ft_otool(char *ptr, char *name,
+		int should_display_infos);
+int						handle_fat(char *ptr, char *name, int is_little_endian);
+uint32_t				swap_uint32(uint32_t val, int is_little_endian);
+int						search_duplicate_in_lst(t_offlist *lst, uint32_t off);
 
 #endif

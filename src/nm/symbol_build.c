@@ -1,9 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   symbol_build.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jle-quer <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/10/30 12:41:05 by jle-quer          #+#    #+#             */
+/*   Updated: 2017/10/30 12:44:08 by jle-quer         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/nm.h"
 
-static void    symbol_fill_32(t_symbol_value *symt, struct segment_command *seg, struct section *sect)
+static void		symbol_fill_32(t_symbol_value *symt,
+		struct segment_command *seg, struct section *sect)
 {
 	uint32_t	i;
-	
+
 	i = 0;
 	while (i < seg->nsects)
 	{
@@ -11,10 +24,10 @@ static void    symbol_fill_32(t_symbol_value *symt, struct segment_command *seg,
 			ft_strcmp(sect->segname, SEG_TEXT) == 0)
 			symt->text = symt->ns;
 		else if (ft_strcmp(sect->sectname, SECT_DATA) == 0 &&
-				 ft_strcmp(sect->segname, SEG_DATA) == 0)
+				ft_strcmp(sect->segname, SEG_DATA) == 0)
 			symt->data = symt->ns;
 		else if (ft_strcmp(sect->sectname, SECT_BSS) == 0 &&
-				 ft_strcmp(sect->segname, SEG_DATA) == 0)
+				ft_strcmp(sect->segname, SEG_DATA) == 0)
 			symt->bss = symt->ns;
 		sect = (void *)sect + sizeof(*sect);
 		symt->ns++;
@@ -22,10 +35,11 @@ static void    symbol_fill_32(t_symbol_value *symt, struct segment_command *seg,
 	}
 }
 
-static void    symbol_fill_64(t_symbol_value *symt, struct segment_command_64 *seg, struct section_64 *sect)
+static void		symbol_fill_64(t_symbol_value *symt,
+		struct segment_command_64 *seg, struct section_64 *sect)
 {
 	uint32_t	i;
-	
+
 	i = 0;
 	while (i < seg->nsects)
 	{
@@ -33,10 +47,10 @@ static void    symbol_fill_64(t_symbol_value *symt, struct segment_command_64 *s
 			ft_strcmp(sect->segname, SEG_TEXT) == 0)
 			symt->text = symt->ns;
 		else if (ft_strcmp(sect->sectname, SECT_DATA) == 0 &&
-				 ft_strcmp(sect->segname, SEG_DATA) == 0)
+				ft_strcmp(sect->segname, SEG_DATA) == 0)
 			symt->data = symt->ns;
 		else if (ft_strcmp(sect->sectname, SECT_BSS) == 0 &&
-				 ft_strcmp(sect->segname, SEG_DATA) == 0)
+				ft_strcmp(sect->segname, SEG_DATA) == 0)
 			symt->bss = symt->ns;
 		sect = (void *)sect + sizeof(*sect);
 		symt->ns++;
@@ -44,13 +58,13 @@ static void    symbol_fill_64(t_symbol_value *symt, struct segment_command_64 *s
 	}
 }
 
-void    symbol_build_32(t_symbol_value *symt, struct mach_header *header,\
-						struct load_command *lc)
+void			symbol_build_32(t_symbol_value *symt,
+		struct mach_header *header, struct load_command *lc)
 {
 	struct segment_command	*seg;
 	struct section			*sect;
 	uint32_t				i;
-	
+
 	i = 0;
 	while (i < header->ncmds)
 	{
@@ -65,13 +79,13 @@ void    symbol_build_32(t_symbol_value *symt, struct mach_header *header,\
 	}
 }
 
-void    symbol_build_64(t_symbol_value *symt, struct mach_header_64 *header,\
-						struct load_command *lc)
+void			symbol_build_64(t_symbol_value *symt,
+		struct mach_header_64 *header, struct load_command *lc)
 {
 	struct segment_command_64	*seg;
 	struct section_64			*sect;
 	uint32_t					i;
-	
+
 	i = 0;
 	while (i < header->ncmds)
 	{

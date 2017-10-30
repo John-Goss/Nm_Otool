@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   handle.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jle-quer <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/10/30 12:26:15 by jle-quer          #+#    #+#             */
+/*   Updated: 2017/10/30 12:33:40 by jle-quer         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/nm.h"
 
 void	handle_64(char *ptr)
@@ -7,7 +19,7 @@ void	handle_64(char *ptr)
 	struct symtab_command	*sym;
 	int						ncmds;
 	int						i;
-	
+
 	header = (struct mach_header_64 *)ptr;
 	ncmds = header->ncmds;
 	i = -1;
@@ -18,7 +30,7 @@ void	handle_64(char *ptr)
 		{
 			sym = (struct symtab_command *)lc;
 			print_output_64(sym, ptr, header);
-			break;
+			break ;
 		}
 		lc = (void *)lc + lc->cmdsize;
 	}
@@ -31,7 +43,7 @@ void	handle_32(char *ptr)
 	struct symtab_command	*sym;
 	int						ncmds;
 	int						i;
-	
+
 	header = (struct mach_header *)ptr;
 	ncmds = header->ncmds;
 	i = -1;
@@ -42,7 +54,7 @@ void	handle_32(char *ptr)
 		{
 			sym = (struct symtab_command *)lc;
 			print_output_32(sym, ptr, header);
-			break;
+			break ;
 		}
 		lc = (void *)lc + lc->cmdsize;
 	}
@@ -54,22 +66,20 @@ void	handle_dynamic_lib(char *ptr, char *name)
 	struct ranlib	*ran;
 	t_offlist		*lst;
 	char			*test;
-	int				i;
-	int				size;
-	int				name_size;
-	
-	i = 0;
+	int				cout[3];
+
+	cout[0] = 0;
 	arch = (void*)ptr + SARMAG;
-	name_size = catch_size(arch->ar_name);
-	test = (void*)ptr + sizeof(*arch) + SARMAG + name_size;
-	ran = (void*)ptr + sizeof(*arch) + SARMAG + name_size + 4;
-	size = *((int *)test);
+	cout[1] = catch_size(arch->ar_name);
+	test = (void*)ptr + sizeof(*arch) + SARMAG + cout[1];
+	ran = (void*)ptr + sizeof(*arch) + SARMAG + cout[1] + 4;
+	cout[2] = *((int *)test);
 	lst = NULL;
-	size = size / sizeof(struct ranlib);
-	while (i < size)
+	cout[2] = cout[2] / sizeof(struct ranlib);
+	while (cout[0] < cout[2])
 	{
-		lst = add_off(lst, ran[i].ran_off, ran[i].ran_un.ran_strx);
-		i++;
+		lst = add_off(lst, ran[cout[0]].ran_off, ran[cout[0]].ran_un.ran_strx);
+		cout[0]++;
 	}
 	browse_ar(lst, ptr, name);
 }
@@ -80,7 +90,7 @@ void	handle_fat(char *ptr, int is_little_endian)
 	struct fat_arch		*arch;
 	uint32_t			x;
 	uint32_t			offset;
-	
+
 	offset = 0;
 	fat = (void*)ptr;
 	x = swap_uint32(fat->nfat_arch, is_little_endian);

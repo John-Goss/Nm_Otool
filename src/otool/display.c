@@ -1,17 +1,30 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   display.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jle-quer <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/10/30 13:03:41 by jle-quer          #+#    #+#             */
+/*   Updated: 2017/10/30 13:05:01 by jle-quer         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <otool.h>
 
-void		print_output_32(struct section *section, void *ptr, char *name, int should_display_infos)
+void		print_output_32(struct section *section, void *ptr, char *name,
+		int should_display_infos)
 {
 	unsigned char	*p;
 	unsigned int	i;
 	int				j;
-	
+
 	if (should_display_infos)
 		ft_printf("%s:\nContents of (%s,%s) section\n", name, section->segname,
-			  section->sectname);
+			section->sectname);
 	else
 		ft_printf("Contents of (%s,%s) section\n", section->segname,
-				  section->sectname);
+				section->sectname);
 	p = (void *)ptr + section->offset;
 	i = 0;
 	while (i < section->size)
@@ -25,18 +38,19 @@ void		print_output_32(struct section *section, void *ptr, char *name, int should
 	}
 }
 
-void		print_output_64(struct section_64 *section, void *ptr, char *name, int should_display_infos)
+void		print_output_64(struct section_64 *section, void *ptr, char *name,
+		int should_display_infos)
 {
 	unsigned char	*p;
 	unsigned int	i;
 	int				j;
-	
+
 	if (should_display_infos)
 		ft_printf("%s:\nContents of (%s,%s) section\n", name, section->segname,
-				  section->sectname);
+				section->sectname);
 	else
 		ft_printf("Contents of (%s,%s) section\n", section->segname,
-				  section->sectname);
+				section->sectname);
 	p = (void *)ptr + section->offset;
 	i = 0;
 	while (i < section->size)
@@ -56,4 +70,14 @@ uint32_t	swap_uint32(uint32_t val, int is_little_endian)
 		return (val);
 	val = ((val << 8) & 0xFF00FF00) | ((val >> 8) & 0xFF00FF);
 	return (val << 16) | (val >> 16);
+}
+
+int			catch_size(char *name)
+{
+	int		x;
+	char	*word;
+
+	word = ft_strchr(name, '/') + 1;
+	x = ft_atoi(word);
+	return (x);
 }

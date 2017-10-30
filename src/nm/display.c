@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   display.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jle-quer <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/10/30 12:00:24 by jle-quer          #+#    #+#             */
+/*   Updated: 2017/10/30 12:04:07 by jle-quer         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/nm.h"
 
 void	display_out_32(uint32_t value, char *str, char type)
@@ -24,15 +36,17 @@ void	display_out_64(uint64_t value, char *str, char type)
 	ft_printf("%s\n", str);
 }
 
-void	print_output_32(struct symtab_command *sym, char *ptr, struct mach_header *header)
+void	print_output_32(struct symtab_command *sym, char *ptr,
+		struct mach_header *header)
 {
 	struct load_command	*lc;
 	char				*stringtable;
 	struct nlist		*array;
 	uint32_t			i;
-	t_symbol_value		symt = {0, 0, 0, 1};
-	
+	t_symbol_value		symt;
+
 	i = 0;
+	symt = init_symtab();
 	array = (void *)ptr + sym->symoff;
 	stringtable = (void *)ptr + sym->stroff;
 	lc = (void *)ptr + sizeof(*header);
@@ -47,15 +61,17 @@ void	print_output_32(struct symtab_command *sym, char *ptr, struct mach_header *
 	}
 }
 
-void	print_output_64(struct symtab_command *sym, char *ptr, struct mach_header_64 *header)
+void	print_output_64(struct symtab_command *sym, char *ptr,
+		struct mach_header_64 *header)
 {
 	struct load_command	*lc;
 	char				*stringtable;
 	struct nlist_64		*array;
 	uint32_t			i;
-	t_symbol_value		symt = {0, 0, 0, 1};
-	
+	t_symbol_value		symt;
+
 	i = 0;
+	symt = init_symtab();
 	array = (void *)ptr + sym->symoff;
 	stringtable = (void *)ptr + sym->stroff;
 	lc = (void *)ptr + sizeof(*header);

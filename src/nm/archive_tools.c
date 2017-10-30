@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   archive_tools.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jle-quer <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/10/30 11:59:42 by jle-quer          #+#    #+#             */
+/*   Updated: 2017/10/30 12:00:10 by jle-quer         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/nm.h"
 
 static char	*catch_name(char *name)
 {
 	size_t		length;
-	
+
 	length = ft_strlen(ARFMAG);
 	return (ft_strstr(name, ARFMAG) + length);
 }
@@ -13,7 +25,7 @@ static void	print_ar(uint32_t off, char *ptr, char *file)
 	int				size_fuck;
 	struct ar_hdr	*arch;
 	char			*name;
-	
+
 	arch = (void*)ptr + off;
 	name = catch_name(arch->ar_name);
 	size_fuck = catch_size(arch->ar_name);
@@ -25,7 +37,7 @@ t_offlist	*add_off(t_offlist *lst, uint32_t off, uint32_t strx)
 {
 	t_offlist	*tmp;
 	t_offlist	*tmp2;
-	
+
 	tmp = (t_offlist*)malloc(sizeof(t_offlist));
 	tmp->off = off;
 	tmp->strx = strx;
@@ -45,7 +57,7 @@ int			catch_size(char *name)
 {
 	int		x;
 	char	*word;
-	
+
 	word = ft_strchr(name, '/') + 1;
 	x = ft_atoi(word);
 	return (x);
@@ -54,7 +66,7 @@ int			catch_size(char *name)
 void		browse_ar(t_offlist *lst, char *ptr, char *name)
 {
 	t_offlist	*tmp;
-	
+
 	tmp = lst;
 	while (tmp)
 	{
