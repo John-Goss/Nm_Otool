@@ -45,6 +45,8 @@ struct nlist		*fill_array(struct nlist *tab, int nsyms)
 	struct nlist	*tab2;
 
 	tab2 = (struct nlist*)malloc(sizeof(struct nlist) * nsyms);
+	if (tab2 == NULL)
+		return (NULL);
 	i = -1;
 	while (++i < nsyms)
 		tab2[i] = tab[i];
@@ -86,6 +88,8 @@ struct nlist_64		*fill_array_64(struct nlist_64 *tab, int nsyms)
 	struct nlist_64	*tab2;
 
 	tab2 = (struct nlist_64*)malloc(sizeof(struct nlist_64) * nsyms);
+	if (tab2 == NULL)
+		return (NULL);
 	i = -1;
 	while (++i < nsyms)
 		tab2[i] = tab[i];

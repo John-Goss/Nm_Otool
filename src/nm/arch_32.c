@@ -6,7 +6,7 @@
 /*   By: jle-quer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/30 14:23:54 by jle-quer          #+#    #+#             */
-/*   Updated: 2017/10/30 14:24:10 by jle-quer         ###   ########.fr       */
+/*   Updated: 2017/10/31 17:54:32 by jle-quer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,11 +68,12 @@ static void		sort_duplicate_strx_by_value(struct nlist *array,
 	while (!sorted)
 	{
 		sorted = 1;
-		increment = -1;
-		while ((uint32_t)++increment < size - 1)
+		increment = 0;
+		while (increment < size - 1)
 		{
 			if (ft_strcmp(stringtable + array[increment].n_un.n_strx,
-				stringtable + array[increment + 1].n_un.n_strx) == 0)
+				stringtable + array[increment + 1].n_un.n_strx) == 0 &&
+				array[increment].n_value != 0 && array[increment + 1].n_value != 0)
 			{
 				if (array[increment].n_value > array[increment + 1].n_value)
 				{
@@ -82,6 +83,7 @@ static void		sort_duplicate_strx_by_value(struct nlist *array,
 					sorted = 0;
 				}
 			}
+			++increment;
 		}
 	}
 }
@@ -121,7 +123,6 @@ void			handle_32(char *ptr)
 	header = (struct mach_header *)ptr;
 	ncmds = header->ncmds;
 	lc = (void *)ptr + sizeof(*header);
-	ft_printf("OUT Before\n");
 	while (++i < ncmds)
 	{
 		if (lc->cmd == LC_SYMTAB)

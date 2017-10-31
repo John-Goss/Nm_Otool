@@ -22,11 +22,11 @@ uint32_t		swap_uint32(uint32_t val)
 
 void			handle_fat(char *ptr, char *file)
 {
-	struct fat_header		*fat_header;
-	struct fat_arch			*arch;
-	uint32_t				offset;
+	struct fat_header			*fat_header;
+	struct fat_arch				*arch;
+	uint32_t							offset;
 	struct mach_header_64	*header;
-	uint32_t				i;
+	uint32_t							i;
 
 	fat_header = (struct fat_header *)ptr;
 	arch = (void *)fat_header + sizeof(*fat_header);

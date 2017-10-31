@@ -61,18 +61,18 @@ static void		sort_duplicate_strx_by_value_64(struct nlist_64 *array,
 {
 	uint64_t		tmp_value;
 	int				sorted;
-	int				increment;
+	uint32_t				increment;
 
 	sorted = 0;
 	tmp_value = 0;
 	while (!sorted)
 	{
 		sorted = 1;
-		increment = -1;
-		while ((uint32_t)++increment < size - 1)
+		increment = 0;
+		while (increment < size - 1)
 		{
 			if (ft_strcmp(stringtable + array[increment].n_un.n_strx,
-				stringtable + array[increment + 1].n_un.n_strx) == 0)
+				stringtable + array[increment + 1].n_un.n_strx) == 0 && array[increment].n_value != 0 && array[increment + 1].n_value != 0)
 			{
 				if (array[increment].n_value > array[increment + 1].n_value)
 				{
@@ -82,6 +82,7 @@ static void		sort_duplicate_strx_by_value_64(struct nlist_64 *array,
 					sorted = 0;
 				}
 			}
+			++increment;
 		}
 	}
 }

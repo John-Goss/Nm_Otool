@@ -52,8 +52,8 @@ void			ft_nm(void *ptr, char *file)
 int				loop_arg(char *av)
 {
 	struct stat	buf;
-	int			fd;
-	void		*ptr;
+	int					fd;
+	void				*ptr;
 
 	if ((fd = open(av, O_RDONLY)) < 0)
 		return (print_error(av, "No such file or directory"));
