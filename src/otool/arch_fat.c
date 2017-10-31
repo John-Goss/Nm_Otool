@@ -6,7 +6,7 @@
 /*   By: jle-quer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/30 14:30:17 by jle-quer          #+#    #+#             */
-/*   Updated: 2017/10/30 14:30:25 by jle-quer         ###   ########.fr       */
+/*   Updated: 2017/10/31 15:31:21 by jle-quer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void			handle_fat(char *ptr, char *file)
 	uint32_t				offset;
 	struct mach_header_64	*header;
 	uint32_t				i;
-	
+
 	fat_header = (struct fat_header *)ptr;
 	arch = (void *)fat_header + sizeof(*fat_header);
 	offset = swap_uint32(arch->offset);

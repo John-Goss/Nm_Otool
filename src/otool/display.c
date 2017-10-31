@@ -6,18 +6,18 @@
 /*   By: jle-quer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/30 14:30:56 by jle-quer          #+#    #+#             */
-/*   Updated: 2017/10/30 14:31:05 by jle-quer         ###   ########.fr       */
+/*   Updated: 2017/10/31 15:31:57 by jle-quer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <otool.h>
 
 void			print_section(long unsigned int addr, unsigned int size,
-								 char *ptr, char *section)
+		char *ptr, char *section)
 {
 	unsigned int	i;
 	char			*str;
-	
+
 	i = 0;
 	ft_printf("%s\n", section);
 	while (i < size)

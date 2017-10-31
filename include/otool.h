@@ -6,7 +6,7 @@
 /*   By: jle-quer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/30 14:40:06 by jle-quer          #+#    #+#             */
-/*   Updated: 2017/10/30 14:40:24 by jle-quer         ###   ########.fr       */
+/*   Updated: 2017/10/31 15:32:40 by jle-quer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,8 @@ int						loop_arg_otool(char *av);
 
 void					print_section(long unsigned int addr, unsigned int size,
 	char *ptr, char *section);
-void					print_section_64(long unsigned int addr, unsigned int size,
-	char *ptr, char *section);
+void					print_section_64(long unsigned int addr,
+		unsigned int size, char *ptr, char *section);
 
 /*
 ** SORT
