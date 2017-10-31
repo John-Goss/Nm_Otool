@@ -7,19 +7,23 @@ SRC_DIR_OTOOL =	 	./src/otool
 OBJ_DIR_NM = 		./obj_nm
 OBJ_DIR_OTOOL =		./obj_otool
 
-SRC_NM = 			ft_nm.c \
+SRC_NM = 			arch_32.c \
+					arch_64.c \
+					arch_fat.c \
+					arch_lib.c \
+					display.c \
+					ft_nm.c \
 					sort.c \
-					display.c \
-					handle.c \
-					symbol_build.c \
-					tools.c \
-					type.c \
-					archive_tools.c
+					utils.c
 
-SRC_OTOOL = 		ft_otool.c \
-					handle.c \
+SRC_OTOOL = 		arch_32.c \
+					arch_64.c \
+					arch_fat.c \
+					arch_lib.c \
 					display.c \
-					archive_tools.c
+					ft_otool.c \
+					sort.c \
+					utils.c
 
 OBJ_NM = 			$(addprefix $(OBJ_DIR_NM)/,$(SRC_NM:.c=.o))
 OBJ_OTOOL = 		$(addprefix $(OBJ_DIR_OTOOL)/,$(SRC_OTOOL:.c=.o))

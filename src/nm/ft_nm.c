@@ -5,55 +5,93 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: jle-quer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/10/30 12:23:43 by jle-quer          #+#    #+#             */
-/*   Updated: 2017/10/30 12:26:05 by jle-quer         ###   ########.fr       */
+/*   Created: 2017/10/30 14:26:01 by jle-quer          #+#    #+#             */
+/*   Updated: 2017/10/30 14:26:10 by jle-quer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/nm.h"
+#include <nm.h>
 
-int	ft_nm(void *ptr, char *object)
+t_symtab		init_symtab(void)
 {
-	uint32_t	magic_number;
+	t_symtab	symt;
 
-	magic_number = *(uint32_t *)ptr;
-	if (magic_number == MH_MAGIC_64)
+	symt.data = 0;
+	symt.bss = 0;
+	symt.text = 0;
+	symt.ns = 1;
+	return (symt);
+}
+
+int				print_error(char *file, char *str)
+{
+	ft_printf("ft_nm: %s: %s.\n", file, str);
+	return (0);
+}
+
+void			ft_nm(void *ptr, char *file)
+{
+	unsigned int	magic_number;
+	struct ar_hdr	*ar;
+
+	ar = (void*)ptr;
+	magic_number = *(unsigned int *)ptr;
+	set_architecture(magic_number);
+	if (!ft_strncmp(ptr, ARMAG, SARMAG))
+		handle_lib(ptr, file);
+	else if (magic_number == MH_MAGIC_64)
 		handle_64(ptr);
 	else if (magic_number == MH_MAGIC)
 		handle_32(ptr);
-	else if (ft_strncmp(ptr, ARMAG, SARMAG) == 0)
-		handle_dynamic_lib(ptr, object);
 	else if (magic_number == FAT_MAGIC || magic_number == FAT_CIGAM)
-		handle_fat(ptr, magic_number == FAT_MAGIC ? 1 : 0);
+		handle_fat(ptr, file);
 	else
-		ERROR(object, "The file was not recognized as a valid object file.");
+		print_error(file, "The file was not recognized as a valid object file");
+}
+
+int				loop_arg(char *av)
+{
+	struct stat	buf;
+	int			fd;
+	void		*ptr;
+
+	if ((fd = open(av, O_RDONLY)) < 0)
+		return (print_error(av, "No such file or directory"));
+	if (fstat(fd, &buf) < 0)
+		return (print_error(av, "Error with fstat"));
+	if ((ptr = mmap(0, buf.st_size, PROT_READ, MAP_PRIVATE, fd, 0))
+	== MAP_FAILED)
+		return (print_error(av, "Is a directory"));
+	ft_nm(ptr, av);
+	if (munmap(ptr, buf.st_size) < 0)
+		return (print_error(av, "Error with munmap"));
 	return (1);
 }
 
-int	main(int ac, char **av)
+int				main(int ac, char **av)
 {
-	int			fd;
-	void		*ptr;
-	struct stat	buf;
+	int		i;
+	char	*str;
 
-	if (ac < 2)
-		av[1] = "a.out\0";
-	if ((fd = open(av[1], O_RDONLY)) != -1)
+	i = 1;
+	g_is_big_endian = 0;
+	str = NULL;
+	if (ac == 1)
+		loop_arg("a.out");
+	else if (ft_strchr(av[1], '-'))
 	{
-		if (fstat(fd, &buf) < 0)
-		{
-			ERROR(av[1], "fstat - The fildes argument is not a valid file \
-					descriptor.");
-		}
-		if ((ptr = mmap(0, buf.st_size, PROT_READ, MAP_PRIVATE, fd, 0))
-				== MAP_FAILED)
-		{
-			ERROR(av[1], "mmap - MAP_FAILED.");
-		}
-		ft_nm(ptr, av[1]);
+		check_bonus(av[1]);
+		if (g_bonus_nm != 0)
+			i++;
 	}
-	else
-		ERROR(av[1], "No such file or directory.");
-	close(fd);
+	while (i < ac)
+	{
+		if (((ac == 3 && g_bonus_nm == 0) || ac > 3) &&
+		(av[i][ft_strlen(av[i]) - 1] != 'a'))
+			ft_printf("\n%s:\n", av[i]);
+		str = av[i];
+		loop_arg(str);
+		i++;
+	}
 	return (0);
 }

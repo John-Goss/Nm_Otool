@@ -5,33 +5,32 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: jle-quer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/10/30 12:47:22 by jle-quer          #+#    #+#             */
-/*   Updated: 2017/10/30 12:58:56 by jle-quer         ###   ########.fr       */
+/*   Created: 2017/10/30 14:39:15 by jle-quer          #+#    #+#             */
+/*   Updated: 2017/10/30 14:39:59 by jle-quer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef NM_H
 # define NM_H
 
-# include <fcntl.h>
-# include <stdio.h>
 # include <sys/mman.h>
 # include <mach-o/loader.h>
 # include <mach-o/nlist.h>
-# include <mach-o/fat.h>
+# include <fcntl.h>
+# include <ar.h>
 # include <mach-o/ranlib.h>
+# include <mach-o/fat.h>
 # include <sys/stat.h>
 # include <stdlib.h>
-# include <ar.h>
 # include "../libft/INCLUDES/libft.h"
 
-/*
-**# define DBG ft_putstr(__func__); ft_putstr(" in "); \
-**ft_putstr(__FILE__); ft_putstr(" at line : "); \
-**ft_putnbr(__LINE__); ft_putchar('\n')
-*/
-
-# define ERROR(name, errmsg) ft_printf("nm: %s: %s\n", name, errmsg); return (1)
+typedef struct			s_symtab
+{
+	unsigned int		data;
+	unsigned int		bss;
+	unsigned int		text;
+	int					ns;
+}						t_symtab;
 
 typedef struct			s_offlist
 {
@@ -40,62 +39,89 @@ typedef struct			s_offlist
 	struct s_offlist	*next;
 }						t_offlist;
 
-typedef struct			s_symbol_value
-{
-	uint32_t			data;
-	uint32_t			bss;
-	uint32_t			text;
-	int					ns;
-}						t_symbol_value;
+int						g_bonus_nm;
+int						g_is_big_endian;
 
 /*
-** x64 ARCH
+** FT_NM
 */
 
-struct nlist_64			*bubble_sort_nlist_64(char *stringtable,
-		struct nlist_64 *tab, int taille);
-void					sort_duplicate_strx_by_value_64(struct nlist_64 *array,
-		char *stringtable, uint32_t size);
-void					symbol_build_64(t_symbol_value *symt,
-		struct mach_header_64 *header, struct load_command *lc);
+t_symtab				init_symtab(void);
+int						print_error(char *file, char *str);
+void					ft_nm(void *ptr, char *file);
+int						loop_arg(char *av);
+
+/*
+** DISPLAY
+*/
+
+void					display_output(struct nlist elem, char *str,
+	t_symtab *symt);
+void					display_output_64(struct nlist_64 elem, char *str,
+	t_symtab *symt);
+void					display_loop_64(struct nlist_64 *array,
+	char *stringtable, t_symtab symt, struct symtab_command *sym);
+void					display_loop(struct nlist *array, char *stringtable,
+	t_symtab symt, struct symtab_command *sym);
+
+/*
+** SORT
+*/
+
+t_offlist				*order_off(t_offlist *lst);
+struct nlist			*fill_array(struct nlist *tab, int nsyms);
+struct nlist			*bubble_sort(char *stringtable, struct nlist *tab,
+	int nsyms);
+struct nlist_64			*fill_array_64(struct nlist_64 *tab, int nsyms);
+struct nlist_64			*bubble_sort_64(char *stringtable, struct nlist_64 *tab,
+	int nsyms);
+
+/*
+** ARCH_64
+*/
+
+void					symtab_building_64(t_symtab *symt,
+	struct mach_header_64 *header, struct load_command *lc);
+void					print_output_64(struct symtab_command *sym,
+	struct mach_header_64 *header, char *ptr);
 void					handle_64(char *ptr);
-void					print_output_64(struct symtab_command *sym, char *ptr,
-		struct mach_header_64 *header);
-char					type_element_64(struct nlist_64 list,
-		t_symbol_value symt);
 
 /*
-** x86 ARCH
+** ARCH_32
 */
 
-struct nlist			*bubble_sort_nlist_32(char *stringtable,
-		struct nlist *tab, int taille);
-void					sort_duplicate_strx_by_value_32(struct nlist *array,
-		char *stringtable, uint32_t size);
-void					symbol_build_32(t_symbol_value *symt,
-		struct mach_header *header, struct load_command *lc);
+void					symtab_building(t_symtab *symt,
+	struct mach_header *header, struct load_command *lc);
+void					print_output(struct symtab_command *sym,
+	struct mach_header *header, char *ptr);
 void					handle_32(char *ptr);
-void					print_output_32(struct symtab_command *sym, char *ptr,
-		struct mach_header *header);
-char					type_element_32(struct nlist list, t_symbol_value symt);
 
 /*
-** Archive Type
+** ARCH_LIB
 */
 
-void					handle_dynamic_lib(char *ptr, char *name);
-void					browse_ar(t_offlist *lst, char *ptr, char *name);
-int						catch_size(char *name);
+int						get_size(char *name);
+char					*get_name(char *name);
 t_offlist				*add_off(t_offlist *lst, uint32_t off, uint32_t strx);
-int						search_duplicate_in_lst(t_offlist *lst, uint32_t off);
+void					print_ar(t_offlist *lst, char *ptr, char *file);
+void					handle_lib(char *ptr, char *name);
 
 /*
-** OTHER
+** ARCH_FAT
 */
 
-int						ft_nm(void *ptr, char *object);
-void					handle_fat(char *ptr, int is_little_endian);
-uint32_t				swap_uint32(uint32_t val, int is_little_endian);
-t_symbol_value			init_symtab(void);
+uint32_t				swap_uint32(uint32_t val);
+void					handle_fat(char *ptr, char *file);
+
+/*
+** UTILS
+*/
+
+void					set_architecture(unsigned int magic_number);
+char					type_n_sect(unsigned int n_sect, t_symtab *symt);
+char					get_type(uint32_t type, uint32_t n_sect, int value,
+	t_symtab *symt);
+int						search_lst(t_offlist *lst, uint32_t off);
+void					check_bonus(char *bonus);
 
 #endif

@@ -5,51 +5,77 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: jle-quer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/10/30 13:06:22 by jle-quer          #+#    #+#             */
-/*   Updated: 2017/10/30 13:13:07 by jle-quer         ###   ########.fr       */
+/*   Created: 2017/10/30 14:31:10 by jle-quer          #+#    #+#             */
+/*   Updated: 2017/10/30 14:31:17 by jle-quer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <otool.h>
 
-int	ft_otool(char *ptr, char *name, int should_display_infos)
+int				print_error(char *av, char *str)
 {
-	uint32_t	magic_number;
-
-	magic_number = *(uint32_t *)ptr;
-	if (magic_number == MH_MAGIC_64)
-		handle_64(ptr, name, should_display_infos);
-	else if (magic_number == MH_MAGIC)
-		handle_32(ptr, name, should_display_infos);
-	else if (ft_strncmp(ptr, ARMAG, SARMAG) == 0)
-		handle_dynamic_lib(ptr, name);
-	else if (magic_number == FAT_MAGIC || magic_number == FAT_CIGAM)
-		handle_fat(ptr, name, (magic_number == FAT_MAGIC));
-	else
-		ERROR(name, "The file was not recognized as a valid object file.\n");
+	ft_printf("ft_otool: %s: %s\n", av, str);
+	return (0);
 }
 
-int	main(int ac, char **av)
+int				ft_otool(char *ptr, char *file, int display)
 {
+	unsigned int	magic_number;
+	struct ar_hdr	*ar;
+
+	ar = (void*)ptr;
+	magic_number = *(unsigned int *)ptr;
+	set_architecture(magic_number);
+	if (magic_number == MH_MAGIC_64)
+		handle_64(ptr, file, display);
+	else if (magic_number == MH_MAGIC)
+		handle_32(ptr, file, display);
+	else if (!ft_strncmp(ptr, ARMAG, SARMAG))
+		handle_lib(ptr, file);
+	else if (magic_number == FAT_MAGIC || magic_number == FAT_CIGAM)
+		handle_fat(ptr, file);
+	else
+		print_error(file, "The file was not recognized as a valid object file");
+	return (0);
+}
+
+int				loop_arg_otool(char *av)
+{
+	struct stat	buf;
 	int			fd;
 	void		*ptr;
-	struct stat	buf;
 
-	if (ac < 2)
-		ERROR(av[0], "at least one file must be specified");
-	else if ((fd = open(av[1], O_RDONLY)) != -1)
+	if ((fd = open(av, O_RDONLY)) < 0)
+		return (print_error(av, "No such file or directory"));
+	if (fstat(fd, &buf) < 0)
+		return (print_error(av, "Error with fstat"));
+	if ((ptr = mmap(0, buf.st_size, PROT_READ, MAP_PRIVATE, fd, 0))
+	== MAP_FAILED)
+		return (print_error(av, "Is a directory"));
+	ft_otool(ptr, av, 1);
+	if (munmap(ptr, buf.st_size) < 0)
+		return (print_error(av, "Error with munmap"));
+	return (1);
+}
+
+int				main(int ac, char **av)
+{
+	int	i;
+
+	i = 0;
+	if (ac > 1)
 	{
-		if (fstat(fd, &buf) < 0)
-			return (ERROR(av[1], "The fildes argument is not a valid FD"));
-		if ((ptr = mmap(0, buf.st_size, PROT_READ, MAP_PRIVATE, fd, 0))
-				== MAP_FAILED)
-			return (ERROR(av[1], "mmap - MAP_FAILED."));
-		ft_otool(ptr, av[1], 1);
+		if (ft_strcmp(av[1], "-d") == 0)
+		{
+			g_bonus_otool = 1;
+			i++;
+		}
+		else
+			g_bonus_otool = 0;
+		while (av[++i])
+			loop_arg_otool(av[i]);
 	}
 	else
-		return (ERROR(av[1], "No such file or directory."));
-	if (munmap(ptr, buf.st_size) < 0)
-		return (ERROR(av[1], "Unable to unmap file."));
-	close(fd);
+		print_error("[-d]", "<file .o / .a>");
 	return (0);
 }

@@ -6,14 +6,22 @@
 /*   By: jle-quer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/27 05:25:19 by jle-quer          #+#    #+#             */
-/*   Updated: 2016/03/14 14:46:36 by jle-quer         ###   ########.fr       */
+/*   Updated: 2017/10/30 14:53:49 by jle-quer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "ft_printf.h"
 
-char	*u_itoa_base(uintmax_t nbr, int base)
+static char		read_tab(int i)
+{
+	char	*tab;
+
+	tab = "0123456789abcdefghijklmnopqrstuvwxyz";
+	return (tab[i]);
+}
+
+char			*u_itoa_base(uintmax_t nbr, int base)
 {
 	char			*ret;
 	int				size;
@@ -39,7 +47,7 @@ char	*u_itoa_base(uintmax_t nbr, int base)
 	return (ret);
 }
 
-char	*ft_itoa_base(intmax_t nbr, int base)
+char			*ft_itoa_base(intmax_t nbr, int base)
 {
 	char			*ret;
 	int				size;
@@ -66,4 +74,32 @@ char	*ft_itoa_base(intmax_t nbr, int base)
 			ret[++size] = '-';
 	}
 	return (ret);
+}
+
+char			*ft_itoa_base_sub(int val, int base, int output_size)
+{
+	char			buffer[output_size + 1];
+	char			*p;
+	unsigned int	unsigned_val;
+
+	unsigned_val = (unsigned int)val;
+	if (base > 36 || base < 2)
+		return (NULL);
+	buffer[output_size] = 0;
+	p = buffer + output_size - 1;
+	*p = '0';
+	if (unsigned_val > 0)
+	{
+		while (unsigned_val > 0)
+		{
+			*p-- = read_tab(unsigned_val % base);
+			unsigned_val = unsigned_val / base;
+			if (p < buffer)
+				break ;
+		}
+		p++;
+	}
+	while (p > buffer)
+		*--p = '0';
+	return (ft_strdup(p));
 }

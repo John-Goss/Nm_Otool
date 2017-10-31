@@ -5,33 +5,27 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: jle-quer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/10/30 12:50:31 by jle-quer          #+#    #+#             */
-/*   Updated: 2017/10/30 13:08:15 by jle-quer         ###   ########.fr       */
+/*   Created: 2017/10/30 14:40:06 by jle-quer          #+#    #+#             */
+/*   Updated: 2017/10/30 14:40:24 by jle-quer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef OTOOL_H
 # define OTOOL_H
 
-# include <fcntl.h>
-# include <stdio.h>
 # include <sys/mman.h>
 # include <mach-o/loader.h>
 # include <mach-o/nlist.h>
-# include <mach-o/fat.h>
+# include <fcntl.h>
+# include <ar.h>
 # include <mach-o/ranlib.h>
+# include <mach-o/fat.h>
 # include <sys/stat.h>
 # include <stdlib.h>
-# include <ar.h>
 # include "../libft/INCLUDES/libft.h"
 
-/*
-**# define DBG ft_putstr(__func__); ft_putstr(" in "); \
-**ft_putstr(__FILE__); ft_putstr(" at line : "); \
-**ft_putnbr(__LINE__); ft_putchar('\n')
-*/
-
-# define ERROR(name, errmsg)ft_printf("error: %s: %s\n", name, errmsg)
+int						g_bonus_otool;
+int						g_is_big_endian;
 
 typedef struct			s_offlist
 {
@@ -40,41 +34,79 @@ typedef struct			s_offlist
 	struct s_offlist	*next;
 }						t_offlist;
 
-/*
-**x64 ARCH
-*/
-
-void					handle_64(char *ptr, char *name,
-		int should_display_infos);
-void					print_output_64(struct section_64 *section, void *ptr,
-		char *name, int should_display_infos);
+int						ft_printf(const char *str, ...);
 
 /*
-**x86 ARCH
+** FT_OTOOL
 */
 
-void					handle_32(char *ptr, char *name,
-		int should_display_infos);
-void					print_output_32(struct section *section, void *ptr,
-		char *name, int should_display_infos);
+int						print_error(char *av, char *str);
+int						ft_otool(char *ptr, char *str, int display);
+int						loop_arg_otool(char *av);
 
 /*
-**Archive Type
+** DISPLAY
 */
 
-void					handle_dynamic_lib(char *ptr, char *name);
+void					print_section(long unsigned int addr, unsigned int size,
+	char *ptr, char *section);
+void					print_section_64(long unsigned int addr, unsigned int size,
+	char *ptr, char *section);
+
+/*
+** SORT
+*/
+
+t_offlist				*order_off(t_offlist *lst);
+struct nlist			*fill_array(struct nlist *tab, int nsyms);
+struct nlist			*bubble_sort(char *stringtable, struct nlist *tab,
+	int nsyms);
+struct nlist_64			*fill_array_64(struct nlist_64 *tab, int nsyms);
+struct nlist_64			*bubble_sort_64(char *stringtable, struct nlist_64 *tab,
+	int nsyms);
+
+/*
+** ARCH_64
+*/
+
+void					symtab_building_64(struct mach_header_64 *header,
+	struct load_command *lc);
+void					print_output_64(struct symtab_command *sym,
+	struct mach_header_64 *header, char *ptr);
+void					handle_64(char *ptr, char *file, int display);
+
+/*
+** ARCH_32
+*/
+
+void					symtab_building(struct mach_header *header,
+	struct load_command *lc);
+void					print_output(struct symtab_command *sym,
+	struct mach_header *header, char *ptr);
+void					handle_32(char *ptr, char *file, int display);
+
+/*
+** ARCH_LIB
+*/
+
+int						get_size(char *name);
+char					*get_name(char *name);
 t_offlist				*add_off(t_offlist *lst, uint32_t off, uint32_t strx);
-int						catch_size(char *name);
-void					browse_ar(t_offlist *lst, char *ptr, char *name);
+void					print_ar(t_offlist *lst, char *ptr, char *file);
+void					handle_lib(char *ptr, char *name);
 
 /*
-** OTHER
+** ARCH_FAT
 */
 
-int						ft_otool(char *ptr, char *name,
-		int should_display_infos);
-int						handle_fat(char *ptr, char *name, int is_little_endian);
-uint32_t				swap_uint32(uint32_t val, int is_little_endian);
-int						search_duplicate_in_lst(t_offlist *lst, uint32_t off);
+uint32_t				swap_uint32(uint32_t val);
+void					handle_fat(char *ptr, char *file);
+
+/*
+** UTILS
+*/
+
+void					set_architecture(unsigned int magic_number);
+int						search_lst(t_offlist *lst, uint32_t off);
 
 #endif

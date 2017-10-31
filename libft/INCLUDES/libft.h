@@ -90,6 +90,7 @@ int					ft_isupper(int c);
 int					ft_strchr_index(const char *str, char c);
 int					ft_count_wchar(unsigned int wchar);
 char				*ft_itoa_base(intmax_t nbr, int base);
+char				*ft_itoa_base_sub(int val, int base, int output_size);
 char				*u_itoa_base(uintmax_t nbr, int base);
 long				ft_power(long nb, int i);
 void				ft_putint(int c);
