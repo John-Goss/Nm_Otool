@@ -6,7 +6,7 @@
 /*   By: jle-quer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/30 14:26:01 by jle-quer          #+#    #+#             */
-/*   Updated: 2017/10/30 14:26:10 by jle-quer         ###   ########.fr       */
+/*   Updated: 2017/11/01 14:08:16 by jle-quer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,8 @@ void			ft_nm(void *ptr, char *file)
 int				loop_arg(char *av)
 {
 	struct stat	buf;
-	int					fd;
-	void				*ptr;
+	int			fd;
+	void		*ptr;
 
 	if ((fd = open(av, O_RDONLY)) < 0)
 		return (print_error(av, "No such file or directory"));

@@ -6,7 +6,7 @@
 /*   By: jle-quer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/30 14:25:38 by jle-quer          #+#    #+#             */
-/*   Updated: 2017/10/31 17:57:39 by jle-quer         ###   ########.fr       */
+/*   Updated: 2017/11/01 14:07:46 by jle-quer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void			display_output_64(struct nlist_64 elem, char *str,
 	char		c;
 
 	c = get_type(elem.n_type, elem.n_sect, elem.n_value, symt);
-	if (ft_strcmp("radr://5614542", str) == 0 || c =='-')
+	if (ft_strcmp("radr://5614542", str) == 0 || c == '-')
 		return ;
 	if (g_bonus_nm == 5)
 		ft_printf("%s\n", str);

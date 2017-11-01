@@ -20,7 +20,7 @@ t_offlist			*order_off(t_offlist *lst)
 
 	cur = lst;
 	stop = 1;
-	while (stop)
+	while (cur && stop)
 	{
 		stop = 0;
 		cur = lst;
