@@ -6,7 +6,7 @@
 /*   By: jle-quer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/30 14:29:37 by jle-quer          #+#    #+#             */
-/*   Updated: 2017/10/30 14:29:50 by jle-quer         ###   ########.fr       */
+/*   Updated: 2017/11/01 15:51:57 by jle-quer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,28 +67,27 @@ static void		sort_duplicate_strx_by_value(struct nlist *array,
 	char *stringtable, uint32_t size)
 {
 	int				sorted;
-	uint64_t		tmp_value;
-	uint32_t		increment;
+	struct nlist	tmp;
+	uint32_t		i;
 
 	sorted = 0;
-	tmp_value = 0;
 	while (!sorted)
 	{
 		sorted = 1;
-		increment = -1;
-		while ((uint32_t)++increment < size - 1)
+		i = 0;
+		while (i < size - 1)
 		{
-			if (ft_strcmp(stringtable + array[increment].n_un.n_strx,
-				stringtable + array[increment + 1].n_un.n_strx) == 0)
-			{
-				if (array[increment].n_value > array[increment + 1].n_value)
+			if (ft_strcmp(stringtable + array[i].n_un.n_strx, stringtable +
+						array[i + 1].n_un.n_strx) == 0 && array[i].n_value != 0
+					&& array[i + 1].n_value != 0)
+				if (array[i].n_value > array[i + 1].n_value)
 				{
-					tmp_value = array[increment + 1].n_value;
-					array[increment + 1].n_value = array[increment].n_value;
-					array[increment].n_value = tmp_value;
+					tmp = array[i + 1];
+					array[i + 1] = array[i];
+					array[i] = tmp;
 					sorted = 0;
 				}
-			}
+			++i;
 		}
 	}
 }
