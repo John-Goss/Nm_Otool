@@ -72,7 +72,8 @@ static void		sort_duplicate_strx_by_value_64(struct nlist_64 *array,
 		while (increment < size - 1)
 		{
 			if (ft_strcmp(stringtable + array[increment].n_un.n_strx,
-				stringtable + array[increment + 1].n_un.n_strx) == 0 && array[increment].n_value != 0 && array[increment + 1].n_value != 0)
+				stringtable + array[increment + 1].n_un.n_strx) == 0 &&
+				array[increment].n_value != 0 && array[increment + 1].n_value != 0)
 			{
 				if (array[increment].n_value > array[increment + 1].n_value)
 				{
