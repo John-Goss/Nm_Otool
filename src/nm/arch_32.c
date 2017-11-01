@@ -6,7 +6,7 @@
 /*   By: jle-quer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/30 14:23:54 by jle-quer          #+#    #+#             */
-/*   Updated: 2017/11/01 14:07:14 by jle-quer         ###   ########.fr       */
+/*   Updated: 2017/11/01 15:11:26 by jle-quer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,12 +59,11 @@ void			symtab_building(t_symtab *symt,
 static void		sort_duplicate_strx_by_value(struct nlist *array,
 	char *stringtable, uint32_t size)
 {
-	uint64_t		tmp_value;
+	struct nlist	tmp;
 	int				sorted;
 	uint32_t		i;
 
 	sorted = 0;
-	tmp_value = 0;
 	while (!sorted)
 	{
 		sorted = 1;
@@ -76,9 +75,9 @@ static void		sort_duplicate_strx_by_value(struct nlist *array,
 					&& array[i + 1].n_value != 0)
 				if (array[i].n_value > array[i + 1].n_value)
 				{
-					tmp_value = array[i + 1].n_value;
-					array[i + 1].n_value = array[i].n_value;
-					array[i].n_value = tmp_value;
+					tmp = array[i + 1];
+					array[i + 1] = array[i];
+					array[i] = tmp;
 					sorted = 0;
 				}
 			++i;
