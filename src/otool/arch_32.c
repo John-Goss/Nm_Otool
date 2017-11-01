@@ -6,7 +6,7 @@
 /*   By: jle-quer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/30 14:29:37 by jle-quer          #+#    #+#             */
-/*   Updated: 2017/11/01 15:51:57 by jle-quer         ###   ########.fr       */
+/*   Updated: 2017/11/01 17:10:45 by jle-quer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,8 +78,8 @@ static void		sort_duplicate_strx_by_value(struct nlist *array,
 		while (i < size - 1)
 		{
 			if (ft_strcmp(stringtable + array[i].n_un.n_strx, stringtable +
-						array[i + 1].n_un.n_strx) == 0 && array[i].n_value != 0
-					&& array[i + 1].n_value != 0)
+						array[i + 1].n_un.n_strx) == 0 && (array[i].n_value != 0
+					|| array[i + 1].n_value != 0))
 				if (array[i].n_value > array[i + 1].n_value)
 				{
 					tmp = array[i + 1];
